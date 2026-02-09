@@ -1,0 +1,19 @@
+// Construtor
+function Pessoa(nome, email, idade, senha){
+    this.nome = nome,
+    this.email = email,
+    this.idade = idade,
+    this.senha = senha
+    this.maiorIdade = true
+
+    if(this.idade <= 12){
+        throw new Error("Menor de 13 anos")
+    }
+
+    if (this.idade < 18){
+        this.maiorIdade = false
+    }
+}
+
+const pessoa1 = new Pessoa('Eduardo', 'eduardovinicius@gmail', 22, 'aaaa')
+console.log(pessoa1)
