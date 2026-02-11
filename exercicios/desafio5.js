@@ -55,6 +55,7 @@ function adicionarPessoa() {
     gerenciador.push(pessoa);
     console.log();
     console.log("Usuário adicionado com sucesso!");
+    console.log(`Nome: ${pessoa.nome} Idade: ${pessoa.idade} Email: ${pessoa.email}`)
 }
 
 function removerPessoa() {
@@ -64,7 +65,7 @@ function removerPessoa() {
     if (index !== -1) {
         gerenciador.splice(index, 1);
         console.log();
-        console.log("Usuário removido com sucesso!");
+        console.log("Usuário removido com sucesso!")
     } else {
         console.log();
         console.log("Usuário não encontrado!");
