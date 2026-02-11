@@ -13,13 +13,11 @@ function bhaskara(a, b, c){
     if(delta === 0){
         const x = -b / (2 * a)
         return `Apenas uma raiz real: x = ${x}`;
+    } else{
+        const x1 = (-b + Math.sqrt(delta)) / (2 * a)
+        const x2 = (-b - Math.sqrt(delta)) / (2 * a)
+        return `Duas raízes reais: x1 = ${x1} e x2 = ${x2}`;
     }
-
-    let x1 = (-b + Math.sqrt(delta)) / (2 * a)
-    let x2 = (-b - Math.sqrt(delta)) / (2 * a)
-
-
-    return `Duas raízes reais: x1 = ${x1} e x2 = ${x2}`;
 } 
 
 
