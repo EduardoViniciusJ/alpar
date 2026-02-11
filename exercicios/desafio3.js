@@ -1,4 +1,4 @@
-const numeroRandomizado = Math.round(Math.random() * 100);
+const numeroRandomizado = Math.floor(Math.random() * 100) + 1; 
 
 let tentativas = 0;
 let escolha;
