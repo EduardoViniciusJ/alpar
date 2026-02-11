@@ -9,8 +9,7 @@ function bhaskara(a, b, c){
     if(delta < 0){
         return "Não existem raízes reais."
     }
-
-    if(delta === 0){
+    else if(delta === 0){
         const x = -b / (2 * a)
         return `Apenas uma raiz real: x = ${x}`;
     } else{
