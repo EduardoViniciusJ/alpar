@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    padding: 10px;
+    background-color: #1e293b;
+}
+
+main {
+    margin-top: 80px;
+}
+
+
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+}
+
+.navbar li a {
+    display: block;
+    color: #f8fafc;
+    text-decoration: none;
+    padding: 14px 20px;
+}
+
+.navbar li a:hover {
+    background-color: #3b82f6;
+    color: #ffffff;
+}
