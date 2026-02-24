@@ -1,38 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.navbar {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    padding: 10px;
-    background-color: #1e293b;
+body {
+    font-family: 'Poppins', sans-serif;
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "menu main"
+        "footer footer";
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 80px 1fr 60px;
+    min-height: 100vh;
 }
 
-main {
-    margin-top: 80px;
+header {
+    grid-area: header;
 }
 
-
-
-.navbar ul {
+.header-navbar {
+    height: 100%;
     display: flex;
+    align-items: center;
+    padding: 30px;
+    background-color: #000000;
+}
+
+.header-navbar h1 {
+    color: #e2e8f0;
+}
+
+aside {
+    grid-area: menu;
+    background-color: #2c405f;
+    padding-top: 20px;
+}
+
+.nav-links {
     list-style: none;
 }
 
-.navbar li a {
-    display: block;
-    color: #f8fafc;
-    text-decoration: none;
-    padding: 14px 20px;
+.nav-links li {
+    margin-bottom: 5px;
 }
 
-.navbar li a:hover {
+.nav-links a {
+    display: flex;
+    color: #e2e8f0;
+    text-decoration: none;
+    padding: 12px 20px;
+}
+
+.nav-links li:hover {
     background-color: #3b82f6;
-    color: #ffffff;
+}
+
+main {
+    grid-area: main;
+    background-color: #f1f5f9;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #1e293b;
+    color: white;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.livros-container {
+    max-height: 600px;
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 6px;
+}
+
+footer {
+    grid-area: footer;
+}
+
+.site-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e293b;
+    color: #e2e8f0;
 }
