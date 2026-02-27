@@ -13,7 +13,7 @@ body {
         "header header"
         "menu main"
         "footer footer";
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 200px 1fr;
     grid-template-rows: 80px 1fr 60px;
     min-height: 100vh;
 }
@@ -80,6 +80,7 @@ th {
 
 th,
 td {
+    font-size: 16px;
     padding: 10px;
     border: 1px solid #ddd;
 }
@@ -101,4 +102,33 @@ footer {
     align-items: center;
     background-color: #1e293b;
     color: #e2e8f0;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: auto;
+    cursor: pointer;
+    accent-color: #000000;
+}
+
+.acoes-tabela {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.btn-comprar {
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-comprar:hover {
+    background-color: #16a34a;
 }
