@@ -119,3 +119,72 @@ button.secondary {
 button.secondary:hover {
     background-color: #cbd5e1;
 }
+
+@media (max-width: 768px) {
+
+    .navbar {
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .navbar ul {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .form-container {
+        margin-top: 30px;
+        padding: 0 20px;
+    }
+
+    .contact-form {
+        padding: 25px;
+        max-width: 100%;
+    }
+
+    .contact-form label {
+        font-size: 18px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        font-size: 16px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .buttons button {
+        width: 100%;
+    }
+
+    textarea {
+        resize: vertical;
+        height: 120px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .form-container h2 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .contact-form {
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .contact-form label {
+        font-size: 16px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        padding: 12px;
+    }
+
+}
