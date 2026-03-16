@@ -78,17 +78,18 @@ p {
 }
 
 .about-section {
-    flex: 2;
     padding: 40px;
     color: #1e293b;
 }
 
 .tech-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     padding: 20px;
+    align-items: start;
 }
+
 
 .tech-grid ul li a {
     color: #0062ff;
