@@ -4,4 +4,4 @@ Este repositório contém **exercícios e projetos desenvolvidos durante o Rocke
 
 ### 🌐 Portfólio com os projetos
 Acesse:
-https://eduardoviniciusj.github.io/alpar/
+[Rocket Program](https://eduardoviniciusj.github.io/Alpar-Rocket-Program/)
