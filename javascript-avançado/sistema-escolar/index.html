@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Educacional</title>
+    <style>
+        .error {
+            color: red;
+            display: none;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Acesso ao Sistema</h1>
+
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="password" placeholder="Senha" required>
+
+        <button type="submit">Entrar</button>
+    </form>
+
+    <script src="./js/entities/User.js"></script>
+    <script src="./js/entities/Student.js"></script>
+    <script src="./js/entities/Teacher.js"></script>
+    <script src="./js/services/Auth.js"></script>
+    <script src="./js/controllers/login-controller.js"></script>
+</body>
+
+</html>
