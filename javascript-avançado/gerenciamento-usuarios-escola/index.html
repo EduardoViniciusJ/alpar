@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento Escolar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+</head>
+<body ng-controller="AppController" class="d-flex flex-column min-vh-100">
+
+        <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="#">Gerenciamento Escolar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="../../../index.html">Voltar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+<main class="container py-4 flex-grow-1">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="fw-bold mb-3 text-primary" ng-bind="mensagemBoasVindas"></h1>
+        </div>
+    </div>
+
+
+      <section class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h3 class="h5 mb-3">Adicionar Novo Usuario</h3>
+            <form ng-submit="adicionarUsuario()">
+                <div class="row g-3 align-items-end">
+                    <div class="col-12 col-md-6">
+                        <label for="nomeUsuario" class="form-label">Nome</label>
+                        <input
+                            id="nomeUsuario"
+                            type="text"
+                            class="form-control"
+                            ng-model="novoUsuario.nome"
+                            placeholder="Digite o nome do usuario"
+                            required>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="tipoUsuario" class="form-label">Tipo</label>
+                        <select id="tipoUsuario" class="form-select" ng-model="novoUsuario.tipo">
+                            <option value="Aluno">Aluno</option>
+                            <option value="Professor">Professor</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2 d-grid">
+                        <button type="submit" class="btn btn-success">Adicionar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+
+    <section class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h3 class="h5 mb-3">Filtros de Busca</h3>
+            <div class="row g-3">
+                <div class="col-12 col-md-7">
+                    <input type="text" class="form-control" ng-model="filtro" placeholder="Busque por nome...">
+                </div>
+                <div class="col-12 col-md-5">
+                    <select class="form-select" ng-model="filtroTipo">
+                        <option value="">Todos os tipos</option>
+                        <option value="Aluno">Apenas Alunos</option>
+                        <option value="Professor">Apenas Professores</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-3 mb-4">
+        <div class="col-12 col-md-6">
+            <div class="card text-bg-primary border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="mb-1">Total de Alunos</p>
+                    <h4 class="mb-0">{{ (usuarios | filter:{tipo:'Aluno'}).length }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card text-bg-dark border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="mb-1">Total de Professores</p>
+                    <h4 class="mb-0">{{ (usuarios | filter:{tipo:'Professor'}).length }}</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-12 col-md-6 col-lg-4" ng-repeat="usuario in usuarios | filter:filtro | filter:{tipo: filtroTipo} | orderBy:'nome' track by $index">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="h5 card-title text-uppercase mb-3">{{ usuario.nome }}</h3>
+                    <p class="card-text mb-2"><strong>Cadastro:</strong> {{ usuario.dataCadastro | date:'dd/MM/yyyy' }}</p>
+                    <p class="card-text mb-3"><strong>Tipo:</strong> {{ usuario.tipo }}</p>
+                    <button type="button" class="btn btn-outline-danger w-100" ng-click="removerUsuario($index)">
+                        Remover
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12" ng-show="(usuarios | filter:filtro | filter:{tipo: filtroTipo}).length === 0">
+            <div class="alert alert-secondary mb-0">
+                Nenhum usuario encontrado com esses filtros.
+            </div>
+        </div>
+    </div>
+</main>
+
+    <footer class="bg-white text-dark py-1 border-top text-muted shadow-sm">
+        <p class="m-3 small">
+            &copy; 2026 <strong>Eduardo Vinicius</strong>
+        </p>
+        </div>
+    </footer>
+
+    <script src="./assets/js/services/user.service.js"></script>
+    <script src="./assets/js/controllers/user.controller.js"></script>
+
+</body>
+</html>
