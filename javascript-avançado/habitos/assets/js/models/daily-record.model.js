@@ -16,11 +16,11 @@ class DailyRecord {
         const normalizedDate = String(date || '').trim();
 
         if (!normalizedDate) {
-            throw new Error('Date cannot be empty');
+            throw new Error('Data não pode estar vazia');
         }
 
         if (Number.isNaN(new Date(normalizedDate).getTime())) {
-            throw new Error('Date must be valid');
+            throw new Error('Data deve ser válida');
         }
 
         this.#date = normalizedDate;
@@ -39,7 +39,7 @@ class DailyRecord {
         const normalizedMoodLevel = Number(moodLevel);
 
         if (!Number.isInteger(normalizedMoodLevel) || normalizedMoodLevel < 1 || normalizedMoodLevel > 4) {
-            throw new Error('Mood level must be between 1 and 4');
+            throw new Error('Nível de humor deve estar entre 1 e 4');
         }
 
         this.#moodLevel = normalizedMoodLevel;
@@ -53,7 +53,7 @@ class DailyRecord {
         const normalizedNote = String(note || '').trim();
 
         if (normalizedNote.length > 300) {
-            throw new Error('Note is too long');
+            throw new Error('Nota é muito longa');
         }
 
         this.#note = normalizedNote;
@@ -65,7 +65,7 @@ class DailyRecord {
 
     set habits(habits) {
         if (!Array.isArray(habits)) {
-            throw new Error('Habits must be an array');
+            throw new Error('Hábitos deve ser um array');
         }
 
         this.#habits = habits;

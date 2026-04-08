@@ -20,7 +20,7 @@ class Habit {
         const normalizedId = Number(id);
 
         if (!Number.isInteger(normalizedId) || normalizedId <= 0) {
-            throw new Error('Id must be a positive integer');
+            throw new Error('Id deve ser um inteiro positivo');
         }
 
         this.#id = normalizedId;
@@ -38,11 +38,11 @@ class Habit {
         const normalizedName = String(name || '').trim();
 
         if (!normalizedName) {
-            throw new Error('Name cannot be empty');
+            throw new Error('Nome não pode estar vazio');
         }
 
         if (normalizedName.length > 60) {
-            throw new Error('Name is too long');
+            throw new Error('Nome é muito longo');
         }
 
         this.#name = normalizedName;
@@ -59,7 +59,7 @@ class Habit {
         }
 
         if (typeof active !== 'boolean') {
-            throw new Error('Active must be a boolean');
+            throw new Error('Active deve ser um booleano');
         }
 
         this.#active = active;
@@ -73,11 +73,11 @@ class Habit {
         const normalizedCreatedAt = String(createdAt || '').trim();
 
         if (!normalizedCreatedAt) {
-            throw new Error('CreatedAt cannot be empty');
+            throw new Error('A data não pode estar vazio');
         }
 
         if (Number.isNaN(new Date(normalizedCreatedAt).getTime())) {
-            throw new Error('CreatedAt must be a valid date');
+            throw new Error('A data deve ser uma data válida');
         }
 
         this.#createdAt = normalizedCreatedAt;

@@ -1,0 +1,20 @@
+.app-mood-emoji {
+    font-size: 2.1rem;
+    line-height: 1;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.mood-btn:hover .app-mood-emoji {
+    transform: scale(1.1);
+}
+
+.btn.active .app-mood-emoji {
+    color: #0d6efd;
+}
+
+.btn.active {
+    background-color: rgba(13, 110, 253, 0.15);
+    border-color: #0d6efd;
+}

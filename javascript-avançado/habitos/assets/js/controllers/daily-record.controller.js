@@ -1,103 +1,145 @@
-angular.module('app').controller('DailyRecordController', function($scope, HabitService, DailyRecordService) {
+angular.module('app').controller('DailyRecordController', function($scope, $timeout, HabitService, DailyRecordService) {
     $scope.todayRecord = null;
+    $scope.recordView = null;
     $scope.note = '';
     $scope.moodLevel = null;
     $scope.dailyHabits = [];
+    $scope.toast = {
+        visible: false,
+        type: 'success',
+        message: ''
+    };
 
-    $scope.errorMessage = '';
-    $scope.successMessage = '';
+    let toastTimer = null;
 
     $scope.moodOptions = [
-        { value: 1, label: 'Muito triste' },
-        { value: 2, label: 'Neutro' },
-        { value: 3, label: 'Feliz' },
-        { value: 4, label: 'Muito feliz' }
+        { value: 1, label: 'Muito triste', emoji: '\uD83D\uDE22' },
+        { value: 2, label: 'Neutro', emoji: '\uD83D\uDE10' },
+        { value: 3, label: 'Feliz', emoji: '\uD83D\uDE42' },
+        { value: 4, label: 'Muito feliz', emoji: '\uD83E\uDD29' }
     ];
 
-    function clearMessages() {
-        $scope.errorMessage = '';
-        $scope.successMessage = '';
-    }
+    function buildTodayHabits() {
+        const activeHabits = HabitService.getAll().filter(function(habit) {
+            return habit.active;
+        });
 
-    function refreshTodayRecord() {
-        $scope.todayRecord = DailyRecordService.getToday();
+        const currentHabits = $scope.recordView ? $scope.recordView.habits : [];
 
-        if (!$scope.todayRecord) {
-            $scope.todayRecord = DailyRecordService.saveToday({});
-        }
-
-        $scope.note = $scope.todayRecord.note;
-        $scope.moodLevel = $scope.todayRecord.moodLevel;
-        $scope.dailyHabits = $scope.todayRecord.habits;
-    }
-
-    $scope.loadTodayHabits = function() {
-        clearMessages();
-
-        try {
-            const activeHabits = HabitService.getAll().filter(function(habit) {
-                return habit.active;
+        return activeHabits.map(function(habit) {
+            const existingHabit = currentHabits.find(function(item) {
+                return item.id === habit.id;
             });
 
-            const currentHabits = $scope.todayRecord ? $scope.todayRecord.habits : [];
+            return {
+                id: habit.id,
+                name: habit.name,
+                completed: existingHabit ? existingHabit.completed : false
+            };
+        });
+    }
 
-            const habitsToSave = activeHabits.map(function(habit) {
-                const existingHabit = currentHabits.find(function(item) {
-                    return item.id === habit.id;
-                });
+    function buildRecordView(record) {
+        if (!record) {
+            return null;
+        }
 
+        return {
+            date: record.date,
+            moodLevel: record.moodLevel,
+            note: record.note,
+            habits: Array.isArray(record.habits) ? record.habits.map(function(habit) {
                 return {
                     id: habit.id,
                     name: habit.name,
-                    completed: existingHabit ? existingHabit.completed : false
+                    completed: !!habit.completed
                 };
-            });
+            }) : []
+        };
+    }
 
-            DailyRecordService.saveToday({ habits: habitsToSave });
-            refreshTodayRecord();
+    function applyTodayRecord(record) {
+        $scope.todayRecord = record;
+        $scope.recordView = buildRecordView(record);
+        $scope.note = $scope.recordView ? $scope.recordView.note : '';
+        $scope.moodLevel = $scope.recordView ? $scope.recordView.moodLevel : null;
+        $scope.dailyHabits = $scope.recordView ? $scope.recordView.habits : [];
+    }
 
-            $scope.successMessage = 'Today habits loaded successfully';
-        } catch (error) {
-            $scope.errorMessage = error.message;
+    function refreshTodayRecord() {
+        applyTodayRecord(DailyRecordService.getToday());
+    }
+
+    $scope.showToast = function(message, type) {
+        if (toastTimer) {
+            $timeout.cancel(toastTimer);
         }
+
+        $scope.toast.message = message;
+        $scope.toast.type = type || 'success';
+        $scope.toast.visible = true;
+
+        toastTimer = $timeout(function() {
+            $scope.toast.visible = false;
+        }, 2600);
+    };
+
+    $scope.getMoodLabel = function(moodLevel) {
+        const mood = $scope.moodOptions.find(function(option) {
+            return option.value === moodLevel;
+        });
+
+        return mood ? mood.label : 'Nao definido';
+    };
+
+    $scope.getMoodEmoji = function(moodLevel) {
+        const mood = $scope.moodOptions.find(function(option) {
+            return option.value === moodLevel;
+        });
+
+        return mood ? mood.emoji : '\uD83D\uDCAD';
     };
 
     $scope.selectMood = function(moodLevel) {
-        clearMessages();
+        $scope.moodLevel = moodLevel;
+    };
 
+    $scope.loadTodayHabits = function() {
         try {
-            DailyRecordService.saveToday({ moodLevel: moodLevel });
-            refreshTodayRecord();
+            const savedRecord = DailyRecordService.saveToday({
+                moodLevel: $scope.moodLevel,
+                note: String($scope.note || '').trim(),
+                habits: buildTodayHabits()
+            });
 
-            $scope.successMessage = 'Mood updated successfully';
+            applyTodayRecord(savedRecord);
+            $scope.showToast('Habitos sincronizados com sucesso', 'success');
         } catch (error) {
-            $scope.errorMessage = error.message;
+            $scope.showToast(error.message, 'danger');
         }
     };
 
-    $scope.saveNote = function() {
-        clearMessages();
-
+    $scope.saveMoment = function() {
         try {
-            DailyRecordService.saveToday({ note: $scope.note });
-            refreshTodayRecord();
+            const savedRecord = DailyRecordService.saveToday({
+                moodLevel: $scope.moodLevel,
+                note: String($scope.note || '').trim(),
+                habits: buildTodayHabits()
+            });
 
-            $scope.successMessage = 'Note updated successfully';
+            applyTodayRecord(savedRecord);
+            $scope.showToast('Registro salvo com sucesso', 'success');
         } catch (error) {
-            $scope.errorMessage = error.message;
+            $scope.showToast(error.message, 'danger');
         }
     };
 
     $scope.toggleHabit = function(habitId) {
-        clearMessages();
-
         try {
-            DailyRecordService.toggleHabit(habitId);
-            refreshTodayRecord();
-
-            $scope.successMessage = 'Daily habit updated successfully';
+            const savedRecord = DailyRecordService.toggleHabit(habitId);
+            applyTodayRecord(savedRecord);
         } catch (error) {
-            $scope.errorMessage = error.message;
+            $scope.showToast(error.message, 'danger');
         }
     };
 
