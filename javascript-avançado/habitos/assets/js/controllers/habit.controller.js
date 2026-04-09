@@ -1,16 +1,15 @@
-angular.module('app').controller('HabitController', function($scope, HabitService) {
+angular.module('app').controller('HabitController', function($scope, HabitService, DailyRecordService) {
     $scope.newHabitName = '';
     $scope.editingHabitId = null;
     $scope.editingHabitName = '';
     $scope.habits = HabitService.getAll();
+    $scope.feedback = {
+        visible: false,
+        type: 'success',
+        message: ''
+    };
 
-    $scope.errorMessage = '';
-    $scope.successMessage = '';
-
-    function clearMessages() {
-        $scope.errorMessage = '';
-        $scope.successMessage = '';
-    }
+    let feedbackTimer = null;
 
     function refreshHabits() {
         $scope.habits = HabitService.getAll();
@@ -21,58 +20,115 @@ angular.module('app').controller('HabitController', function($scope, HabitServic
         $scope.editingHabitName = '';
     }
 
-    $scope.createHabit = function() {
-        clearMessages();
+    function showFeedback(message, type) {
+        $scope.feedback.message = message;
+        $scope.feedback.type = type || 'success';
+        $scope.feedback.visible = true;
 
+        if (feedbackTimer) {
+            clearTimeout(feedbackTimer);
+        }
+
+        feedbackTimer = setTimeout(function() {
+            $scope.feedback.visible = false;
+            if (!$scope.$$phase) {
+                $scope.$apply();
+            }
+        }, 3000);
+    }
+
+    function closeAddHabitModal() {
+        const modalElement = document.getElementById('addHabitModal');
+
+        if (!modalElement || !window.bootstrap) {
+            return;
+        }
+
+        const modal = window.bootstrap.Modal.getInstance(modalElement);
+
+        if (modal) {
+            modal.hide();
+        }
+    }
+
+    function getDailyHabitById(habitId) {
+        const todayRecord = DailyRecordService.getToday();
+        if (!todayRecord || !Array.isArray(todayRecord.habits)) {
+            return null;
+        }
+
+        return todayRecord.habits.find(function(habit) {
+            return habit.id === Number(habitId);
+        }) || null;
+    }
+
+    $scope.isHabitCompletedToday = function(habitId) {
+        const dailyHabit = getDailyHabitById(habitId);
+        return dailyHabit ? dailyHabit.completed : false;
+    };
+
+    $scope.toggleDailyHabitFromCard = function(habitId) {
+        try {
+            DailyRecordService.toggleHabit(habitId);
+            refreshHabits();
+        } catch (error) {
+            showFeedback(error.message, 'danger');
+        }
+    };
+
+    $scope.createHabit = function() {
         try {
             HabitService.create($scope.newHabitName);
             $scope.newHabitName = '';
             refreshHabits();
-            $scope.successMessage = 'Habit created successfully';
+            closeAddHabitModal();
+            showFeedback('Habito criado com sucesso', 'success');
         } catch (error) {
-            $scope.errorMessage = error.message;
+            showFeedback(error.message, 'danger');
         }
     };
 
     $scope.startEditHabit = function(habit) {
-        clearMessages();
         $scope.editingHabitId = habit.id;
         $scope.editingHabitName = habit.name;
     };
 
     $scope.cancelEditHabit = function() {
-        clearMessages();
         resetEditing();
     };
 
     $scope.saveEditHabit = function() {
-        clearMessages();
-
         try {
-            HabitService.rename($scope.editingHabitId, $scope.editingHabitName);
-            refreshHabits();
+            const inputElement = document.getElementById('habitEditInput');
+            const newName = inputElement ? inputElement.value : $scope.editingHabitName;
+
+            HabitService.rename(Number($scope.editingHabitId), newName);
+
+            $scope.habits = HabitService.getAll();
+
             resetEditing();
-            $scope.successMessage = 'Habit updated successfully';
+
+            showFeedback('Hábito atualizado com sucesso', 'success');
+
+            if (!$scope.$$phase) {
+                $scope.$apply();
+            }
         } catch (error) {
-            $scope.errorMessage = error.message;
+            showFeedback(error.message, 'danger');
         }
     };
 
     $scope.toggleHabitStatus = function(habitId) {
-        clearMessages();
-
         try {
             HabitService.toggleStatus(habitId);
             refreshHabits();
-            $scope.successMessage = 'Habit status updated successfully';
+            showFeedback('Status do habito atualizado', 'success');
         } catch (error) {
-            $scope.errorMessage = error.message;
+            showFeedback(error.message, 'danger');
         }
     };
 
     $scope.removeHabit = function(habitId) {
-        clearMessages();
-
         try {
             HabitService.remove(habitId);
             refreshHabits();
@@ -81,9 +137,9 @@ angular.module('app').controller('HabitController', function($scope, HabitServic
                 resetEditing();
             }
 
-            $scope.successMessage = 'Habit removed successfully';
+            showFeedback('Habito removido com sucesso', 'success');
         } catch (error) {
-            $scope.errorMessage = error.message;
+            showFeedback(error.message, 'danger');
         }
     };
 });
