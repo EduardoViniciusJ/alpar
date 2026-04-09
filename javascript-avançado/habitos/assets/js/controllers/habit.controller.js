@@ -82,7 +82,7 @@ angular.module('app').controller('HabitController', function($scope, HabitServic
             $scope.newHabitName = '';
             refreshHabits();
             closeAddHabitModal();
-            showFeedback('Habito criado com sucesso', 'success');
+            showFeedback('Hábito criado com sucesso', 'success');
         } catch (error) {
             showFeedback(error.message, 'danger');
         }
@@ -104,15 +104,11 @@ angular.module('app').controller('HabitController', function($scope, HabitServic
 
             HabitService.rename(Number($scope.editingHabitId), newName);
 
-            $scope.habits = HabitService.getAll();
+            refreshHabits();
 
             resetEditing();
 
             showFeedback('Hábito atualizado com sucesso', 'success');
-
-            if (!$scope.$$phase) {
-                $scope.$apply();
-            }
         } catch (error) {
             showFeedback(error.message, 'danger');
         }
@@ -122,7 +118,7 @@ angular.module('app').controller('HabitController', function($scope, HabitServic
         try {
             HabitService.toggleStatus(habitId);
             refreshHabits();
-            showFeedback('Status do habito atualizado', 'success');
+            showFeedback('Status do hábito atualizado', 'success');
         } catch (error) {
             showFeedback(error.message, 'danger');
         }
@@ -137,7 +133,7 @@ angular.module('app').controller('HabitController', function($scope, HabitServic
                 resetEditing();
             }
 
-            showFeedback('Habito removido com sucesso', 'success');
+            showFeedback('Hábito removido com sucesso', 'success');
         } catch (error) {
             showFeedback(error.message, 'danger');
         }

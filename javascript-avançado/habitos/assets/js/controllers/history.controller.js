@@ -62,7 +62,13 @@ angular.module('app').controller('HistoryController', function($scope, DailyReco
     };
 
     function applyFilters() {
-        const filterDate = String($scope.filters.date || '').trim();
+        let filterDate = $scope.filters.date;
+        if (filterDate instanceof Date) {
+            filterDate = filterDate.toISOString().split('T')[0];
+        } else {
+            filterDate = String(filterDate || '').trim();
+        }
+
         const hasMoodFilter = $scope.filters.moodLevel !== '' && $scope.filters.moodLevel !== null;
         const filterMoodLevel = hasMoodFilter ? Number($scope.filters.moodLevel) : null;
 
@@ -72,6 +78,8 @@ angular.module('app').controller('HistoryController', function($scope, DailyReco
             return matchesDate && matchesMood;
         });
     }
+
+    $scope.applyFilters = applyFilters;
 
     function loadRecords() {
         $scope.records = DailyRecordService.getAll().slice().reverse();

@@ -123,32 +123,6 @@ angular.module('app').service('HabitService', function() {
         return habit;
     };
 
-    this.activate = function(id) {
-        const habit = findHabitById(id);
-
-        if (!habit) {
-            throw new Error('Hábito não encontrado');
-        }
-
-        habit.active = true;
-        saveToStorage();
-
-        return habit;
-    };
-
-    this.deactivate = function(id) {
-        const habit = findHabitById(id);
-
-        if (!habit) {
-            throw new Error('Hábito não encontrado');
-        }
-
-        habit.active = false;
-        saveToStorage();
-
-        return habit;
-    };
-
     this.toggleStatus = function(id) {
         const habit = findHabitById(id);
 

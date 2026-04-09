@@ -99,7 +99,7 @@
 
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-primary rounded-0 px-4 py-2 fw-semibold" ng-click="saveMoment()">
-                                        Salvar registro
+                                        Atualizar registro
                                     </button>
                                 </div>
                             </div>
@@ -115,9 +115,6 @@
                                 </div>
 
                                 <div class="d-flex flex-wrap gap-2">
-                                    <button type="button" class="btn btn-outline-primary rounded-0 fw-semibold" ng-click="saveMoment()">
-                                        Sincronizar
-                                    </button>
                                     <button type="button" class="btn btn-primary rounded-0 fw-semibold" data-bs-toggle="modal" data-bs-target="#addHabitModal">
                                         Adicionar hábito
                                     </button>
@@ -140,7 +137,7 @@
                                     Nenhum registro salvo ainda. Escolha o humor e clique em salvar registro.
                                 </div>
 
-                                <div class="list-group list-group-flush" ng-if="habits.length > 0">
+                                <div class="habits-scroll-container list-group list-group-flush" ng-if="habits.length > 0">
                                     <div class="list-group-item px-3 py-3 border border-0 mb-2 border-opacity-10 shadow-sm rounded-3" ng-repeat="habit in habits track by habit.id">
                                         <div class="d-flex align-items-center gap-3" ng-if="editingHabitId !== habit.id">
                                             <input
@@ -153,15 +150,18 @@
                                             <span class="badge rounded-0 px-2 py-2" ng-class="habit.active ? 'text-bg-primary' : 'text-bg-secondary'">
                                                 {{ habit.active ? 'Ativo' : 'Inativo' }}
                                             </span>
-                                            <div class="d-flex gap-2">
+                                            <div class="d-flex flex-wrap gap-2">
                                                 <button type="button" class="btn btn-sm btn-outline-primary rounded-0" ng-click="startEditHabit(habit)">
-                                                    Editar
+                                                    <i class="bi bi-pencil"></i>
+                                                    <span class="d-none d-sm-inline ms-1">Editar</span>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-outline-secondary rounded-0" ng-click="toggleHabitStatus(habit.id)">
-                                                    {{ habit.active ? 'Desativar' : 'Ativar' }}
+                                                    <i class="bi" ng-class="habit.active ? 'bi-toggle-off' : 'bi-toggle-on'"></i>
+                                                    <span class="d-none d-sm-inline ms-1">{{ habit.active ? 'Desativar' : 'Ativar' }}</span>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-danger rounded-0" ng-click="removeHabit(habit.id)">
-                                                    Remover
+                                                    <i class="bi bi-trash"></i>
+                                                    <span class="d-none d-sm-inline ms-1">Remover</span>
                                                 </button>
                                             </div>
                                         </div>

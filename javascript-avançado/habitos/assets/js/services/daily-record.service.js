@@ -79,6 +79,7 @@ angular.module('app').service('DailyRecordService', function(AuthService, HabitS
 
         if (!dailyRecord) {
             dailyRecord = new DailyRecord();
+            dailyRecord.date = getTodayDate();
             dailyRecords.push(dailyRecord);
             saveToStorage();
         }

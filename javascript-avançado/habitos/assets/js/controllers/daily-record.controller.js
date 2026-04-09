@@ -91,18 +91,14 @@ angular.module('app').controller('DailyRecordController', function($scope, $time
     };
 
     $scope.saveMoment = function() {
-        try {
-            const savedRecord = DailyRecordService.saveToday({
-                moodLevel: $scope.moodLevel,
-                note: String($scope.note || '').trim(),
-                habits: buildTodayHabits()
-            });
+        const savedRecord = DailyRecordService.saveToday({
+            moodLevel: $scope.moodLevel,
+            note: String($scope.note || '').trim(),
+            habits: buildTodayHabits()
+        });
 
-            applyTodayRecord(savedRecord);
-            $scope.showToast('Registro salvo com sucesso', 'success');
-        } catch (error) {
-            $scope.showToast(error.message, 'danger');
-        }
+        applyTodayRecord(savedRecord);
+        $scope.showToast('Registro salvo com sucesso', 'success');
     };
 
     $scope.toggleHabit = function(habitId) {
