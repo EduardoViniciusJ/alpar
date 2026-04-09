@@ -86,8 +86,8 @@ angular.module('app').controller('AccountController', function($scope, AuthServi
     refreshSession();
 
     $scope.redirectAuthenticatedUsers = function() {
-        var path = String($window.location.pathname || '').toLowerCase();
-        if (path.indexOf('index.html') !== -1 && AuthService.isAuthenticated()) {
+        const path = String($window.location.pathname || '').toLowerCase();
+        if ((path.indexOf('index.html') !== -1 || path === '/' || path === '') && AuthService.isAuthenticated()) {
             $window.location.replace(ROUTES.DASHBOARD);
         }
     };
